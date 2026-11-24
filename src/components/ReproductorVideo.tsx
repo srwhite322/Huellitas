@@ -28,17 +28,21 @@ export function ReproductorVideo({ uri, obtenerPosicion, onPosicion, onPantallaC
   const player = useVideoPlayer(uri, (p) => {
     p.loop = false;
     p.timeUpdateEventInterval = 0.5; // emite 'timeUpdate' cada medio segundo
+    // Si el reproductor anterior se liberó (p. ej. al salir de la app), retomamos
+    // desde el segundo guardado. ExoPlayer acepta la posición antes de cargar.
+    const guardada = obtenerPosicion();
+    if (guardada > 0) p.currentTime = guardada;
   });
 
   const { isPlaying } = useEvent(player, 'playingChange', { isPlaying: player.playing });
   const { status, error } = useEvent(player, 'statusChange', { status: player.status });
 
-  // Cuando el video está listo, retomamos donde iba (si se había liberado al salir).
+  // Respaldo: si al quedar listo el video no está en la posición guardada, la corregimos.
   useEventListener(player, 'statusChange', ({ status: nuevo }) => {
     if (nuevo === 'readyToPlay' && !posicionRestaurada.current) {
       posicionRestaurada.current = true;
-      const guardada = obtenerPosicion();
-      if (guardada > 0) player.seekBy(guardada);
+      const diferencia = obtenerPosicion() - player.currentTime;
+      if (Math.abs(diferencia) > 1) player.seekBy(diferencia);
     }
   });
 

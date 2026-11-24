@@ -1,4 +1,4 @@
-# Huellitas: app móvil para una tienda de mascotas
+# Patitas & Bigotes: app móvil para una tienda de mascotas
 
 App hecha con **React Native + Expo (SDK 58)** y **Expo Router**. Tiene tres secciones:
 

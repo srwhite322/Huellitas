@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Patitas &amp; Bigotes – Documentación técnica</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 18mm 20mm 18mm;
+    @bottom-center { content: "Patitas & Bigotes · Documentación técnica — Página " counter(page) " de " counter(pages); font: 8.5pt "Segoe UI", sans-serif; color: #64748b; }
+  }
+  @page :first { @bottom-center { content: none; } }
+
+  :root {
+    --naranja: #f97316; --naranja-suave: #ffedd5; --azul: #0ea5e9;
+    --texto: #0f172a; --suave: #475569; --borde: #e2e8f0; --fondo: #f8fafc;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 10.5pt; line-height: 1.5; color: var(--texto); margin: 0; background: #fff; }
+
+  h1, h2, h3 { line-height: 1.25; break-after: avoid; }
+  h2 { font-size: 17pt; margin: 0 0 4mm; padding-bottom: 2mm; border-bottom: 2.5px solid var(--naranja); }
+  h2 .num { color: var(--naranja); margin-right: 6px; }
+  h3 { font-size: 12.5pt; margin: 6mm 0 2mm; color: #1e293b; }
+  p { margin: 0 0 3mm; text-align: justify; }
+  ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+  li { margin-bottom: 1.2mm; }
+  section { break-before: page; }
+  code { font-family: "Cascadia Code", Consolas, monospace; font-size: 9pt; background: #f1f5f9; padding: 0 3px; border-radius: 3px; }
+  pre { font-family: "Cascadia Code", Consolas, monospace; font-size: 8.4pt; line-height: 1.45; background: #0f172a; color: #e2e8f0; padding: 3.5mm 4mm; border-radius: 6px; margin: 0 0 4mm; white-space: pre-wrap; break-inside: avoid; border-left: 4px solid var(--naranja); }
+  pre .c { color: #94a3b8; font-style: italic; }
+  pre .k { color: #f9a8d4; }
+  pre .s { color: #86efac; }
+  pre .f { color: #7dd3fc; }
+  .archivo { font-size: 8.5pt; color: var(--suave); margin: -2mm 0 1.5mm; font-family: Consolas, monospace; }
+
+  table { width: 100%; border-collapse: collapse; margin: 0 0 4mm; font-size: 9.4pt; break-inside: avoid; }
+  th { background: var(--texto); color: #fff; text-align: left; padding: 2mm 2.5mm; font-weight: 600; }
+  td { padding: 1.8mm 2.5mm; border-bottom: 1px solid var(--borde); vertical-align: top; }
+  tr:nth-child(even) td { background: var(--fondo); }
+  td code { font-size: 8.4pt; }
+
+  .nota { background: var(--naranja-suave); border-left: 4px solid var(--naranja); padding: 3mm 4mm; border-radius: 4px; margin: 0 0 4mm; break-inside: avoid; }
+  .nota.azul { background: #e0f2fe; border-color: var(--azul); }
+  .nota strong:first-child { display: block; margin-bottom: 1mm; }
+  .ok { color: #15803d; font-weight: 700; }
+
+  /* Portada */
+  .portada { height: 255mm; display: flex; flex-direction: column; justify-content: space-between; }
+  .portada .banda { background: linear-gradient(135deg, #f97316, #fb923c); color: #fff; border-radius: 10px; padding: 16mm 12mm; }
+  .portada .etiqueta { text-transform: uppercase; letter-spacing: 2px; font-size: 9.5pt; opacity: .9; }
+  .portada h1 { font-size: 38pt; margin: 3mm 0 2mm; }
+  .portada .sub { font-size: 15pt; font-weight: 300; margin: 0; }
+  .portada .capturas { display: flex; gap: 6mm; justify-content: center; margin: 10mm 0; }
+  .portada .capturas img { height: 92mm; border-radius: 6px; border: 1px solid var(--borde); box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+  .portada .datos { display: grid; grid-template-columns: 38mm 1fr; gap: 2mm 4mm; font-size: 10.5pt; }
+  .portada .datos div:nth-child(odd) { color: var(--suave); }
+  .linea { border-bottom: 1px solid #94a3b8; min-width: 90mm; display: inline-block; }
+
+  /* Índice */
+  .indice ol { list-style: none; padding: 0; counter-reset: i; }
+  .indice li { counter-increment: i; display: flex; padding: 2.2mm 0; border-bottom: 1px dotted #cbd5e1; font-size: 11pt; }
+  .indice li::before { content: counter(i) "."; color: var(--naranja); font-weight: 700; width: 9mm; }
+  .indice li span { color: var(--suave); margin-left: auto; font-size: 9.5pt; }
+
+  /* Figuras */
+  figure { margin: 0 0 4mm; break-inside: avoid; text-align: center; }
+  figcaption { font-size: 8.8pt; color: var(--suave); margin-top: 1.5mm; }
+  .fila-img { display: flex; gap: 4mm; justify-content: center; align-items: flex-start; break-inside: avoid; margin-bottom: 4mm; }
+  .fila-img figure { flex: 1; margin: 0; }
+  .fila-img img.v { width: 100%; max-width: 46mm; border-radius: 5px; border: 1px solid var(--borde); }
+  img.h { width: 100%; border-radius: 5px; border: 1px solid var(--borde); }
+  .diagrama { width: 100%; margin: 1mm 0 4mm; break-inside: avoid; }
+
+  .tarjetas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; margin-bottom: 4mm; }
+  .tarjeta { border: 1px solid var(--borde); border-radius: 6px; padding: 3mm; break-inside: avoid; }
+  .tarjeta b { display: block; color: var(--naranja); font-size: 10pt; margin-bottom: 1mm; }
+  .tarjeta span { font-size: 9pt; color: var(--suave); }
+</style>
+</head>
+<body>
+
+<!-- ============================ PORTADA ============================ -->
+<div class="portada">
+  <div class="banda">
+    <div class="etiqueta">Proyecto de aplicaciones móviles · Multimedia</div>
+    <h1>Patitas &amp; Bigotes</h1>
+    <p class="sub">Aplicación móvil para una tienda de mascotas<br>Documentación técnica: integración multimedia y optimización</p>
+  </div>
+
+  <div class="capturas">
+    <img src="img/01-catalogo.jpg" alt="Catálogo">
+    <img src="img/07-video-reproduciendo.jpg" alt="Video">
+    <img src="img/09-audio-reproduciendo.jpg" alt="Audio">
+  </div>
+
+  <div class="datos">
+    <div>Tecnología</div><div>React Native 0.88 + Expo SDK 58 + Expo Router (TypeScript)</div>
+    <div>Multimedia</div><div>expo-image (Glide) · expo-video (ExoPlayer) · expo-audio</div>
+    <div>Repositorio</div><div>github.com/srwhite322/Huellitas</div>
+    <div>Fecha</div><div>23 de noviembre de 2026</div>
+    <div>Integrantes</div><div><span class="linea">&nbsp;</span></div>
+  </div>
+</div>
+
+<!-- ============================ ÍNDICE ============================ -->
+<section class="indice">
+  <h2>Contenido</h2>
+  <ol>
+    <li>Resumen del proyecto <span>Qué hace la app y qué se evalúa</span></li>
+    <li>Requisitos y cómo se cumplen <span>Matriz de trazabilidad</span></li>
+    <li>Tecnología elegida <span>React Native + Expo y librerías nativas</span></li>
+    <li>Arquitectura y navegación <span>Estructura de carpetas y pantallas</span></li>
+    <li>Integración multimedia <span>Imágenes, video y audio</span></li>
+    <li>Optimización de memoria y rendimiento <span>Qué hicimos y por qué</span></li>
+    <li>Ciclo de vida multimedia <span>Detener y liberar recursos</span></li>
+    <li>Diseño responsivo <span>Rotación y tabletas</span></li>
+    <li>Pruebas y verificación <span>Herramientas y pruebas en emulador</span></li>
+    <li>Problemas encontrados y soluciones <span>Bitácora técnica</span></li>
+    <li>Cómo ejecutar el proyecto <span>Emulador, celular y APK</span></li>
+    <li>Capturas de la aplicación <span>Vertical y horizontal</span></li>
+  </ol>
+</section>
+
+<!-- ============================ 1. RESUMEN ============================ -->
+<section>
+  <h2><span class="num">1.</span>Resumen del proyecto</h2>
+  <p><b>Patitas &amp; Bigotes</b> es una aplicación móvil para una tienda de mascotas. La temática sirve para demostrar tres capacidades técnicas: <b>cargar imágenes de forma eficiente</b>, <b>reproducir video integrado</b> y <b>controlar audio</b>, administrando correctamente la memoria y los recursos del teléfono.</p>
+
+  <div class="tarjetas">
+    <div class="tarjeta"><b>Catálogo</b><span>12 productos (comida, juguetes, accesorios e higiene) con imagen, nombre, categoría y precio. Filtro por categoría y pantalla de detalle.</span></div>
+    <div class="tarjeta"><b>Galería</b><span>8 mascotas en adopción o venta. 5 tienen video que se reproduce dentro de la app, con pausa, adelantar y retroceder.</span></div>
+    <div class="tarjeta"><b>Consejos</b><span>4 pistas de voz con consejos de cuidado y un reproductor propio con Iniciar, Pausar y Detener.</span></div>
+  </div>
+
+  <h3>Qué evalúa el profesor y dónde se demuestra</h3>
+  <table>
+    <tr><th style="width:30%">Requisito técnico</th><th>Cómo lo demostramos</th></tr>
+    <tr><td>Gestión de memoria y rendimiento</td><td>Imágenes pedidas al tamaño de pantalla y cacheadas por Glide; listas virtualizadas; la galería nunca crea reproductores; caché vaciada ante poca memoria. (Sección 6)</td></tr>
+    <tr><td>Ciclo de vida multimedia</td><td>Los reproductores solo existen mientras la pantalla está visible y la app en primer plano. Al cambiar de pantalla o salir, se desmontan y se liberan. Probado con <code>dumpsys audio</code>. (Secciones 7 y 9)</td></tr>
+    <tr><td>Uso de APIs y librerías</td><td><code>expo-image</code> usa <b>Glide</b> en Android; <code>expo-video</code> usa <b>ExoPlayer (Media3)</b>; <code>expo-audio</code> usa el reproductor nativo. (Sección 3)</td></tr>
+    <tr><td>Diseño responsivo</td><td>Columnas calculadas según el ancho; marcos con proporción fija y <code>contentFit</code> para que nada se deforme; diseños lado a lado en horizontal. (Sección 8)</td></tr>
+  </table>
+
+  <div class="nota azul"><strong>Idea central</strong>Un reproductor multimedia es un recurso caro: ocupa memoria, un decodificador de hardware y el foco de audio. Por eso toda la app sigue una regla: <i>el reproductor existe solo mientras el usuario lo puede ver</i>. Cuando deja de verlo, el componente se desmonta y la librería libera el reproductor nativo.</div>
+</section>
+
+<!-- ============================ 2. REQUISITOS ============================ -->
+<section>
+  <h2><span class="num">2.</span>Requisitos y cómo se cumplen</h2>
+  <p>La siguiente matriz relaciona cada requisito del enunciado con la solución implementada y el archivo donde se puede revisar el código.</p>
+
+  <h3>Requisitos funcionales</h3>
+  <table>
+    <tr><th style="width:27%">Requisito</th><th style="width:43%">Solución</th><th>Archivo</th></tr>
+    <tr><td>Lista dinámica de productos</td><td><code>FlatList</code> en cuadrícula, con filtro por categoría mediante chips.</td><td><code>src/app/(tabs)/index.tsx</code></td></tr>
+    <tr><td>Imagen, nombre, categoría y precio</td><td>Tarjeta memoizada con <code>expo-image</code>; precio en pesos colombianos.</td><td><code>src/components/TarjetaProducto.tsx</code></td></tr>
+    <tr><td>Vista de detalle</td><td>Pantalla nueva con ruta dinámica, descripción completa, características y stock.</td><td><code>src/app/producto/[id].tsx</code></td></tr>
+    <tr><td>Galería de imágenes y videos</td><td>Cuadrícula de mascotas con miniatura y etiqueta "VIDEO"; filtros Todas, Con video, Perros, Gatos y Otras.</td><td><code>src/app/(tabs)/galeria.tsx</code></td></tr>
+    <tr><td>Video integrado con pausa y adelantar</td><td><code>VideoView</code> con controles nativos más botones propios: −10 s, reproducir/pausar y +10 s.</td><td><code>src/components/ReproductorVideo.tsx</code></td></tr>
+    <tr><td>Pistas de audio con consejos</td><td>4 pistas WAV locales (perros, gatos, hámsteres y peces).</td><td><code>src/data/audios.ts</code></td></tr>
+    <tr><td>Reproductor: iniciar, pausar, detener</td><td>Panel con los tres botones, barra de progreso y tiempos.</td><td><code>src/components/ReproductorAudio.tsx</code></td></tr>
+  </table>
+
+  <h3>Requisitos técnicos</h3>
+  <table>
+    <tr><th style="width:27%">Requisito</th><th style="width:43%">Solución</th><th>Archivo</th></tr>
+    <tr><td>Carga eficiente de recursos</td><td>URL de imagen al ancho exacto en píxeles físicos; caché en memoria y disco; <code>recyclingKey</code>; precarga; video en streaming.</td><td><code>src/utils/imagenes.ts</code></td></tr>
+    <tr><td>Detener y liberar al cambiar de pantalla</td><td>Montaje condicional con <code>useIsFocused()</code>; los hooks de expo liberan el reproductor al desmontar.</td><td><code>src/app/(tabs)/consejos.tsx</code></td></tr>
+    <tr><td>Detener y liberar al salir de la app</td><td>Hook <code>useAppActiva()</code> basado en <code>AppState</code>; reproducción en segundo plano desactivada.</td><td><code>src/hooks/useAppActiva.ts</code>, <code>app.json</code></td></tr>
+    <tr><td>MediaPlayer/ExoPlayer y Glide</td><td><code>expo-video</code> (ExoPlayer), <code>expo-audio</code> y <code>expo-image</code> (Glide).</td><td><code>package.json</code></td></tr>
+    <tr><td>Sin deformación en tableta o al girar</td><td><code>aspectRatio</code> fijo + <code>contentFit</code>; columnas según el ancho; <code>orientation: "default"</code>.</td><td><code>src/hooks/useColumnas.ts</code></td></tr>
+  </table>
+</section>
+
+<!-- ============================ 3. TECNOLOGÍA ============================ -->
+<section>
+  <h2><span class="num">3.</span>Tecnología elegida</h2>
+  <p>Elegimos <b>React Native con Expo (SDK 58)</b> en lugar de Kotlin nativo o Flutter. La razón principal es que las librerías multimedia de Expo usan por debajo <b>exactamente las bibliotecas nativas que pide el enunciado</b>: en Android, las imágenes se cargan con Glide y el video con ExoPlayer. Así cumplimos el requisito de "usar las herramientas recomendadas" y, además, el código funciona también en iOS.</p>
+
+  <table>
+    <tr><th style="width:22%">Necesidad</th><th style="width:22%">Librería (versión)</th><th style="width:28%">Motor nativo en Android</th><th>Motor en iOS</th></tr>
+    <tr><td>Imágenes</td><td><code>expo-image</code> 58.0.18</td><td><b>Glide</b> (caché LRU en disco de hasta 250 MB)</td><td>SDWebImage</td></tr>
+    <tr><td>Video</td><td><code>expo-video</code> 58.0.14</td><td><b>ExoPlayer (Jetpack Media3)</b></td><td>AVPlayer</td></tr>
+    <tr><td>Audio</td><td><code>expo-audio</code> 58.0.12</td><td>Reproductor nativo de Android</td><td>AVAudioPlayer</td></tr>
+    <tr><td>Navegación</td><td><code>expo-router</code> 58.0.32</td><td>react-native-screens (vistas nativas)</td><td>UINavigationController</td></tr>
+  </table>
+
+  <h3>Comparación de alternativas</h3>
+  <table>
+    <tr><th style="width:22%">Opción</th><th style="width:39%">Ventajas</th><th>Por qué no la elegimos</th></tr>
+    <tr><td>Kotlin + Android Studio</td><td>Acceso directo a Glide y ExoPlayer.</td><td>Solo Android y más código para la interfaz.</td></tr>
+    <tr><td>Flutter</td><td>Muy buen rendimiento gráfico.</td><td>No usa Glide (tiene su propia caché de imágenes) y exige aprender Dart.</td></tr>
+    <tr><td><b>React Native + Expo</b></td><td>Usa Glide y ExoPlayer por debajo, recarga en caliente y un solo código para Android e iOS.</td><td><span class="ok">Elegida</span></td></tr>
+  </table>
+
+  <h3>Versiones del proyecto</h3>
+  <table>
+    <tr><th>Componente</th><th>Versión</th><th>Componente</th><th>Versión</th></tr>
+    <tr><td>Expo SDK</td><td>58.0.26</td><td>React</td><td>19.3.0</td></tr>
+    <tr><td>React Native</td><td>0.88.1</td><td>TypeScript</td><td>6.0 (modo estricto)</td></tr>
+    <tr><td>Android de pruebas</td><td>Android 16 (API 36), Pixel 7</td><td>Paquete JS para Android</td><td>2,9 MB (1409 módulos)</td></tr>
+  </table>
+</section>
+
+<!-- ============================ 4. ARQUITECTURA ============================ -->
+<section>
+  <h2><span class="num">4.</span>Arquitectura y navegación</h2>
+  <p>Usamos <b>Expo Router</b>: cada archivo dentro de <code>src/app/</code> es una pantalla. Un <i>Stack</i> raíz contiene las pestañas y las pantallas de detalle; así, al abrir un detalle, este se apila encima de las pestañas y al volver se destruye.</p>
+
+  <svg class="diagrama" viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial" font-size="12">
+    <defs><marker id="fl" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#475569"/></marker></defs>
+    <rect x="250" y="8" width="200" height="40" rx="8" fill="#0f172a"/>
+    <text x="350" y="33" fill="#fff" text-anchor="middle" font-weight="700">Stack raíz · _layout.tsx</text>
+    <rect x="40" y="90" width="300" height="40" rx="8" fill="#f97316"/>
+    <text x="190" y="115" fill="#fff" text-anchor="middle" font-weight="700">Pestañas · (tabs)/_layout.tsx</text>
+    <rect x="400" y="90" width="130" height="40" rx="8" fill="#0ea5e9"/>
+    <text x="465" y="115" fill="#fff" text-anchor="middle" font-weight="600">producto/[id]</text>
+    <rect x="550" y="90" width="130" height="40" rx="8" fill="#0ea5e9"/>
+    <text x="615" y="115" fill="#fff" text-anchor="middle" font-weight="600">mascota/[id]</text>
+    <rect x="20" y="180" width="100" height="40" rx="8" fill="#ffedd5" stroke="#f97316"/>
+    <text x="70" y="205" text-anchor="middle">Catálogo</text>
+    <rect x="140" y="180" width="100" height="40" rx="8" fill="#ffedd5" stroke="#f97316"/>
+    <text x="190" y="205" text-anchor="middle">Galería</text>
+    <rect x="260" y="180" width="100" height="40" rx="8" fill="#ffedd5" stroke="#f97316"/>
+    <text x="310" y="205" text-anchor="middle">Consejos</text>
+    <line x1="330" y1="48" x2="200" y2="88" stroke="#475569" marker-end="url(#fl)"/>
+    <line x1="370" y1="48" x2="465" y2="88" stroke="#475569" marker-end="url(#fl)"/>
+    <line x1="400" y1="48" x2="610" y2="88" stroke="#475569" marker-end="url(#fl)"/>
+    <line x1="150" y1="130" x2="75" y2="178" stroke="#475569" marker-end="url(#fl)"/>
+    <line x1="190" y1="130" x2="190" y2="178" stroke="#475569" marker-end="url(#fl)"/>
+    <line x1="230" y1="130" x2="305" y2="178" stroke="#475569" marker-end="url(#fl)"/>
+    <text x="470" y="160" fill="#475569" font-size="11">El detalle se apila encima de las pestañas.</text>
+    <text x="470" y="176" fill="#475569" font-size="11">Al volver atrás se desmonta y libera su video.</text>
+    <text x="20" y="242" fill="#475569" font-size="11">Las pestañas NO se desmontan al cambiar entre ellas (ver sección 7).</text>
+  </svg>
+
+  <h3>Estructura de carpetas</h3>
+<pre>src/
+├── app/                        <span class="c"># Pantallas (Expo Router)</span>
+│   ├── _layout.tsx             <span class="c"># Stack raíz, modo de audio, aviso de poca memoria</span>
+│   ├── (tabs)/_layout.tsx      <span class="c"># Barra de pestañas</span>
+│   ├── (tabs)/index.tsx        <span class="c"># Catálogo</span>
+│   ├── (tabs)/galeria.tsx      <span class="c"># Galería de mascotas</span>
+│   ├── (tabs)/consejos.tsx     <span class="c"># Consejos en audio</span>
+│   ├── producto/[id].tsx       <span class="c"># Detalle de producto</span>
+│   └── mascota/[id].tsx        <span class="c"># Detalle de mascota + video</span>
+├── components/                 <span class="c"># TarjetaProducto, TarjetaMascota, Chips,</span>
+│                               <span class="c"># ReproductorVideo, ReproductorAudio</span>
+├── hooks/                      <span class="c"># useAppActiva (AppState), useColumnas (responsivo)</span>
+├── data/                       <span class="c"># productos, mascotas, pistas de audio, tipos</span>
+├── utils/imagenes.ts           <span class="c"># URL de imagen al tamaño justo</span>
+└── theme.ts                    <span class="c"># Colores, espacios y formatos (precio, tiempo)</span>
+assets/audio/                   <span class="c"># 4 pistas de voz WAV (22 kHz, mono)</span></pre>
+
+  <h3>Separación de responsabilidades</h3>
+  <ul>
+    <li><b>Pantallas</b> (<code>src/app</code>): deciden <i>cuándo</i> montar un reproductor (foco y estado de la app).</li>
+    <li><b>Componentes reproductores</b>: encapsulan <i>cómo</i> se crea, controla y libera cada reproductor.</li>
+    <li><b>Hooks</b>: lógica reutilizable de ciclo de vida (<code>useAppActiva</code>) y de diseño responsivo (<code>useColumnas</code>).</li>
+    <li><b>Datos</b>: el contenido está separado del código de interfaz, para cambiar productos o medios sin tocar las pantallas.</li>
+  </ul>
+</section>
+
+<!-- ============================ 5. INTEGRACIÓN ============================ -->
+<section>
+  <h2><span class="num">5.</span>Integración multimedia</h2>
+
+  <h3>5.1 Imágenes con expo-image (Glide)</h3>
+  <p>Todas las imágenes usan el componente <code>Image</code> de <code>expo-image</code>, que en Android delega en <b>Glide</b>. Glide decodifica en segundo plano, reutiliza bitmaps y mantiene una caché en memoria y otra en disco.</p>
+  <div class="archivo">src/components/TarjetaProducto.tsx</div>
+<pre><span class="k">const</span> fuente = <span class="f">urlImagen</span>(producto.imagen, ancho * PixelRatio.<span class="f">get</span>());
+
+<span class="c">{/* Contenedor cuadrado + contentFit="cover": la foto se recorta, nunca se deforma. */}</span>
+&lt;View style={styles.marcoImagen}&gt;          <span class="c">// aspectRatio: 1</span>
+  &lt;Image
+    source={fuente}
+    style={StyleSheet.absoluteFill}
+    contentFit=<span class="s">"cover"</span>
+    transition={200}                     <span class="c">// fundido suave al cargar</span>
+    cachePolicy=<span class="s">"memory-disk"</span>             <span class="c">// caché en RAM y en disco</span>
+    recyclingKey={producto.id}           <span class="c">// la lista recicla vistas sin mezclar imágenes</span>
+  /&gt;
+&lt;/View&gt;</pre>
+
+  <h3>5.2 Video con expo-video (ExoPlayer)</h3>
+  <p>El video se reproduce <b>dentro de la app</b> con <code>VideoView</code>, sin abrir YouTube ni el reproductor del sistema. El hook <code>useVideoPlayer</code> crea un reproductor ExoPlayer al montar el componente y <b>lo libera automáticamente al desmontarlo</b>. Sumamos controles propios a los nativos para cumplir explícitamente "pausa y adelantar".</p>
+  <div class="archivo">src/components/ReproductorVideo.tsx</div>
+<pre><span class="k">const</span> player = <span class="f">useVideoPlayer</span>(uri, (p) =&gt; {
+  p.loop = <span class="k">false</span>;
+  p.timeUpdateEventInterval = 0.5;       <span class="c">// evento 'timeUpdate' cada medio segundo</span>
+});
+
+<span class="c">// Estado reactivo a partir de los eventos nativos del reproductor</span>
+<span class="k">const</span> { isPlaying } = <span class="f">useEvent</span>(player, <span class="s">'playingChange'</span>, { isPlaying: player.playing });
+<span class="k">const</span> { status }    = <span class="f">useEvent</span>(player, <span class="s">'statusChange'</span>, { status: player.status });
+
+&lt;VideoView
+  player={player}
+  contentFit=<span class="s">"contain"</span>                    <span class="c">// conserva la proporción original</span>
+  nativeControls                         <span class="c">// barra de progreso y pantalla completa</span>
+  fullscreenOptions={{ enable: <span class="k">true</span> }}
+  allowsPictureInPicture={<span class="k">false</span>}
+/&gt;
+
+<span class="c">// Controles propios</span>
+player.<span class="f">seekBy</span>(-10);   player.<span class="f">play</span>();   player.<span class="f">pause</span>();   player.<span class="f">seekBy</span>(10);</pre>
+  <p>Además, el componente muestra un indicador mientras carga (<code>status === 'loading'</code>) y un mensaje si falla la red (<code>status === 'error'</code>). Al terminar el video, el botón principal cambia a "repetir" (<code>player.replay()</code>).</p>
+  <p>Los videos son MP4 H.264 de 720p, de entre 4 y 7 MB. Verificamos que tienen el índice (<code>moov</code>) al inicio del archivo, lo que permite <b>empezar a reproducir antes de descargarlos completos</b>, y que el servidor acepta peticiones por rangos (HTTP 206), lo que hace posible adelantar.</p>
+
+  <h3>5.3 Audio con expo-audio</h3>
+  <p>El reproductor de audio usa <code>useAudioPlayer</code> y <code>useAudioPlayerStatus</code>. Las pistas de voz las generamos con la síntesis de voz en español de Windows (voces Pablo, Helena y Laura), en WAV de 22 kHz mono: buena calidad para voz con archivos de unos 1,4 MB. Al estar empaquetadas en la app, funcionan sin internet.</p>
+  <div class="archivo">src/components/ReproductorAudio.tsx</div>
+<pre><span class="k">const</span> player = <span class="f">useAudioPlayer</span>(pista.archivo, { updateInterval: 250 });
+<span class="k">const</span> estado = <span class="f">useAudioPlayerStatus</span>(player);  <span class="c">// playing, currentTime, duration, isLoaded…</span>
+
+<span class="k">const</span> <span class="f">iniciar</span> = () =&gt; {
+  <span class="k">if</span> (estado.currentTime &gt;= estado.duration - 0.25) player.<span class="f">seekTo</span>(0);
+  player.<span class="f">play</span>();
+};
+<span class="k">const</span> <span class="f">pausar</span>  = () =&gt; player.<span class="f">pause</span>();
+<span class="k">const</span> <span class="f">detener</span> = () =&gt; { player.<span class="f">pause</span>(); player.<span class="f">seekTo</span>(0); };  <span class="c">// detener = pausar + volver al inicio</span>
+
+<span class="c">// Al terminar, vuelve al inicio para poder repetir</span>
+<span class="f">useEffect</span>(() =&gt; {
+  <span class="k">if</span> (estado.didJustFinish) { player.<span class="f">pause</span>(); player.<span class="f">seekTo</span>(0); }
+}, [estado.didJustFinish, player]);</pre>
+  <div class="archivo">src/app/_layout.tsx — configuración global del audio</div>
+<pre><span class="f">setAudioModeAsync</span>({
+  playsInSilentMode: <span class="k">true</span>,
+  shouldPlayInBackground: <span class="k">false</span>,   <span class="c">// nunca sonar en segundo plano</span>
+  interruptionMode: <span class="s">'doNotMix'</span>,       <span class="c">// pausa otras apps de música mientras suena</span>
+});</pre>
+</section>
+
+<!-- ============================ 6. OPTIMIZACIÓN ============================ -->
+<section>
+  <h2><span class="num">6.</span>Optimización de memoria y rendimiento</h2>
+  <p>El riesgo principal en una app con muchas fotos y videos es quedarse sin memoria (la app se "traba" o el sistema la cierra). Estas son las técnicas que aplicamos, de mayor a menor impacto.</p>
+
+  <h3>6.1 Pedir cada imagen al tamaño en que se muestra</h3>
+  <p>Una foto original de un banco de imágenes puede medir 4000 × 6000 píxeles. Al decodificarla, cada píxel ocupa 4 bytes (RGBA), así que <b>una sola foto ocuparía unos 96 MB de RAM</b>. Una tarjeta del catálogo mide unos 190 dp de ancho, que en un Pixel 7 equivalen a unos 500 píxeles físicos: decodificada a ese tamaño, la imagen ocupa <b>alrededor de 1 MB</b>.</p>
+  <p>Por eso <code>urlImagen()</code> le pide al CDN la versión exacta que se necesita, calculando el ancho en píxeles físicos (<code>dp × PixelRatio</code>):</p>
+  <div class="archivo">src/utils/imagenes.ts</div>
+<pre><span class="k">export function</span> <span class="f">urlImagen</span>(base: string, anchoPx: number): string {
+  <span class="k">const</span> ancho = Math.<span class="f">min</span>(Math.<span class="f">round</span>(anchoPx), 1600);   <span class="c">// tope de 1600 px</span>
+  <span class="k">const</span> [sinQuery] = base.<span class="f">split</span>(<span class="s">'?'</span>);
+  <span class="k">if</span> (sinQuery.<span class="f">includes</span>(<span class="s">'images.pexels.com'</span>)) {
+    <span class="k">return</span> <span class="s">`${sinQuery}?auto=compress&amp;cs=tinysrgb&amp;w=${ancho}`</span>;
+  }
+  <span class="c">// … mismo criterio para Unsplash</span>
+  <span class="k">return</span> base;
+}</pre>
+  <p>Ganamos por partida doble: <b>se descargan menos datos</b> y <b>Glide decodifica un bitmap pequeño</b>. En el detalle del producto se pide una versión más grande, limitada a 700 dp.</p>
+
+  <h3>6.2 Caché en dos niveles y precarga</h3>
+  <ul>
+    <li><code>cachePolicy="memory-disk"</code>: al volver a una pantalla, la imagen sale de la RAM al instante; si el sistema liberó la RAM, sale del disco sin volver a descargarse.</li>
+    <li><b>Precarga</b>: al tocar un producto ejecutamos <code>Image.prefetch()</code> con la imagen grande, mientras se anima la transición a la pantalla de detalle.</li>
+    <li><b>Aviso de poca memoria</b>: escuchamos el evento <code>memoryWarning</code> de <code>AppState</code> y vaciamos la caché en RAM (la de disco se conserva).</li>
+  </ul>
+<pre>AppState.<span class="f">addEventListener</span>(<span class="s">'memoryWarning'</span>, () =&gt; {
+  Image.<span class="f">clearMemoryCache</span>();   <span class="c">// libera RAM; las imágenes siguen en disco</span>
+});</pre>
+
+  <h3>6.3 Listas virtualizadas</h3>
+  <p>El catálogo y la galería usan <code>FlatList</code>, que solo mantiene montadas las filas cercanas a la pantalla. Así, la memoria no crece aunque la lista tenga cientos de productos.</p>
+  <table>
+    <tr><th style="width:32%">Propiedad / técnica</th><th>Efecto</th></tr>
+    <tr><td><code>initialNumToRender={6}</code></td><td>Primer render rápido: solo 6 tarjetas al abrir.</td></tr>
+    <tr><td><code>windowSize={5}</code></td><td>Mantiene montadas unas 5 pantallas de contenido alrededor de la visible (por defecto son 21).</td></tr>
+    <tr><td><code>maxToRenderPerBatch={6}</code></td><td>Renderiza en lotes pequeños para no bloquear el hilo de la interfaz.</td></tr>
+    <tr><td><code>removeClippedSubviews</code></td><td>Desconecta de la jerarquía nativa las vistas que están fuera de pantalla.</td></tr>
+    <tr><td><code>memo</code> + <code>useCallback</code></td><td>Las tarjetas no se vuelven a renderizar si sus datos no cambiaron.</td></tr>
+    <tr><td><code>recyclingKey</code></td><td>Al reciclar una vista no se ve por un instante la foto anterior.</td></tr>
+  </table>
+
+  <h3>6.4 Nunca crear reproductores en las listas</h3>
+  <p>Un error común es poner un reproductor de video en cada tarjeta de la galería: con 5 videos habría 5 instancias de ExoPlayer compitiendo por los decodificadores de hardware, que son pocos. En Patitas &amp; Bigotes, la galería solo muestra una <b>miniatura con un ícono de play</b>. El reproductor se crea al abrir el detalle, así que <b>nunca hay más de un reproductor de video activo</b>.</p>
+
+  <h3>6.5 Medios ligeros</h3>
+  <table>
+    <tr><th style="width:20%">Recurso</th><th style="width:40%">Formato elegido</th><th>Por qué</th></tr>
+    <tr><td>Video</td><td>MP4 H.264, 720p, 4–7 MB, <i>faststart</i></td><td>Decodificación por hardware en cualquier Android; empieza a reproducirse sin descargarse completo.</td></tr>
+    <tr><td>Audio</td><td>WAV 22 kHz mono, ~1,4 MB</td><td>Suficiente para voz; local, sin depender de la red.</td></tr>
+    <tr><td>Imágenes</td><td>JPEG comprimido por el CDN</td><td>Peso mínimo al ancho exacto que se muestra.</td></tr>
+  </table>
+</section>
+
+<!-- ============================ 7. CICLO DE VIDA ============================ -->
+<section>
+  <h2><span class="num">7.</span>Ciclo de vida multimedia</h2>
+  <p>El enunciado exige que el audio y el video <b>se detengan y liberen la memoria</b> cuando el usuario cambia de pantalla o sale de la app. Lo resolvemos con una sola regla, aplicada en las dos pantallas multimedia:</p>
+
+  <div class="nota"><strong>Regla de montaje</strong><code>reproductorMontado = enFoco &amp;&amp; appActiva</code>. El componente del reproductor solo se renderiza mientras la pantalla está visible <b>y</b> la app está en primer plano. Si cualquiera de las dos condiciones cambia, React desmonta el componente y <code>useAudioPlayer</code> / <code>useVideoPlayer</code> liberan el reproductor nativo.</div>
+
+  <svg class="diagrama" viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial" font-size="12">
+    <defs><marker id="fl2" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#475569"/></marker></defs>
+    <rect x="10" y="20" width="150" height="54" rx="8" fill="#ffedd5" stroke="#f97316"/>
+    <text x="85" y="43" text-anchor="middle" font-weight="700">useIsFocused()</text>
+    <text x="85" y="61" text-anchor="middle" font-size="11">¿pantalla visible?</text>
+    <rect x="10" y="110" width="150" height="54" rx="8" fill="#ffedd5" stroke="#f97316"/>
+    <text x="85" y="133" text-anchor="middle" font-weight="700">useAppActiva()</text>
+    <text x="85" y="151" text-anchor="middle" font-size="11">¿app en primer plano?</text>
+    <circle cx="250" cy="92" r="26" fill="#0f172a"/>
+    <text x="250" y="97" fill="#fff" text-anchor="middle" font-weight="700">Y</text>
+    <line x1="160" y1="47" x2="226" y2="80" stroke="#475569" marker-end="url(#fl2)"/>
+    <line x1="160" y1="137" x2="226" y2="104" stroke="#475569" marker-end="url(#fl2)"/>
+    <rect x="340" y="20" width="350" height="54" rx="8" fill="#dcfce7" stroke="#16a34a"/>
+    <text x="515" y="43" text-anchor="middle" font-weight="700">Verdadero → se monta el reproductor</text>
+    <text x="515" y="61" text-anchor="middle" font-size="11">useVideoPlayer / useAudioPlayer crean el reproductor nativo</text>
+    <rect x="340" y="110" width="350" height="54" rx="8" fill="#fee2e2" stroke="#dc2626"/>
+    <text x="515" y="133" text-anchor="middle" font-weight="700">Falso → se desmonta</text>
+    <text x="515" y="151" text-anchor="middle" font-size="11">el audio/video se detiene y se libera la memoria</text>
+    <line x1="276" y1="85" x2="338" y2="52" stroke="#16a34a" marker-end="url(#fl2)"/>
+    <line x1="276" y1="100" x2="338" y2="132" stroke="#dc2626" marker-end="url(#fl2)"/>
+  </svg>
+
+  <h3>7.1 Detectar si la app está en primer plano</h3>
+  <div class="archivo">src/hooks/useAppActiva.ts</div>
+<pre><span class="k">export function</span> <span class="f">useAppActiva</span>(): boolean {
+  <span class="k">const</span> [estado, setEstado] = <span class="f">useState</span>&lt;AppStateStatus&gt;(
+    (AppState.currentState <span class="k">as</span> AppStateStatus | <span class="k">null</span>) ?? <span class="s">'active'</span>,
+  );
+  <span class="f">useEffect</span>(() =&gt; {
+    <span class="k">const</span> sub = AppState.<span class="f">addEventListener</span>(<span class="s">'change'</span>, setEstado);
+    <span class="k">return</span> () =&gt; sub.<span class="f">remove</span>();          <span class="c">// limpiamos el listener al desmontar</span>
+  }, []);
+  <span class="k">return</span> estado === <span class="s">'active'</span>;
+}</pre>
+
+  <h3>7.2 El caso de las pestañas</h3>
+  <p>Este fue el punto más delicado: <b>las pestañas no se desmontan al cambiar de una a otra</b>, porque React Navigation las conserva para que el cambio sea instantáneo. Si dependiéramos solo del desmontaje de la pantalla, el audio de Consejos <b>seguiría sonando</b> al pasar al Catálogo. Por eso la pantalla monta el reproductor solo cuando está enfocada:</p>
+  <div class="archivo">src/app/(tabs)/consejos.tsx</div>
+<pre><span class="k">const</span> enFoco = <span class="f">useIsFocused</span>();
+<span class="k">const</span> appActiva = <span class="f">useAppActiva</span>();
+<span class="k">const</span> reproductorMontado = enFoco &amp;&amp; appActiva;
+
+{pista &amp;&amp; reproductorMontado &amp;&amp; (
+  &lt;ReproductorAudio key={pista.id} pista={pista} … /&gt;   <span class="c">// key: cambiar de pista libera la anterior</span>
+)}</pre>
+
+  <h3>7.3 Video: liberar y retomar donde iba</h3>
+  <p>En el detalle de la mascota aplicamos la misma regla. Además, guardamos el segundo en que iba el video en una <code>ref</code>. Si el reproductor se libera (por ejemplo, porque el usuario fue a otra app), al volver se crea uno nuevo que <b>retoma desde ese punto, en pausa</b>. Mientras el reproductor no existe, se muestra solo la miniatura.</p>
+  <div class="archivo">src/app/mascota/[id].tsx</div>
+<pre><span class="k">const</span> posicion = <span class="f">useRef</span>(0);
+<span class="c">// En Android, la pantalla completa nativa abre otra Activity y AppState reporta
+// "background": en ese caso no liberamos el video.</span>
+<span class="k">const</span> reproductorMontado = enFoco &amp;&amp; (appActiva || pantallaCompleta);</pre>
+  <div class="archivo">src/components/ReproductorVideo.tsx — la posición se aplica al crear el reproductor</div>
+<pre><span class="k">const</span> player = <span class="f">useVideoPlayer</span>(uri, (p) =&gt; {
+  <span class="k">const</span> guardada = <span class="f">obtenerPosicion</span>();
+  <span class="k">if</span> (guardada &gt; 0) p.currentTime = guardada;   <span class="c">// ExoPlayer acepta la posición antes de cargar</span>
+});</pre>
+
+  <h3>7.4 Configuración nativa: sin reproducción en segundo plano</h3>
+  <div class="archivo">app.json</div>
+<pre>[<span class="s">"expo-video"</span>, { <span class="s">"supportsBackgroundPlayback"</span>: <span class="k">false</span>, <span class="s">"supportsPictureInPicture"</span>: <span class="k">false</span> }],
+[<span class="s">"expo-audio"</span>, { <span class="s">"enableBackgroundPlayback"</span>: <span class="k">false</span>, <span class="s">"recordAudioAndroid"</span>: <span class="k">false</span>,
+                <span class="s">"microphonePermission"</span>: <span class="k">false</span> }]</pre>
+  <p>Así, la build nativa ni siquiera declara el servicio de reproducción en segundo plano ni pide permiso de micrófono: la app solo usa lo que necesita.</p>
+
+  <table>
+    <tr><th style="width:38%">Evento del usuario</th><th>Qué pasa con el reproductor</th></tr>
+    <tr><td>Cambia de pestaña (audio)</td><td><code>useIsFocused</code> pasa a falso → se desmonta → se detiene y libera.</td></tr>
+    <tr><td>Vuelve atrás desde el detalle (video)</td><td>La pantalla se destruye → <code>useVideoPlayer</code> libera ExoPlayer.</td></tr>
+    <tr><td>Presiona Home o cambia de app</td><td><code>AppState</code> pasa a <i>background</i> → se desmonta → se libera.</td></tr>
+    <tr><td>Recibe una llamada</td><td>Igual que el anterior; además, Android quita el foco de audio.</td></tr>
+    <tr><td>Elige otra pista de audio</td><td>Cambia la <code>key</code> → se libera el reproductor anterior y se crea uno nuevo.</td></tr>
+  </table>
+</section>
+
+<!-- ============================ 8. RESPONSIVO ============================ -->
+<section>
+  <h2><span class="num">8.</span>Diseño responsivo</h2>
+  <p>La app se adapta a teléfonos en vertical, en horizontal y a tabletas. En <code>app.json</code> usamos <code>"orientation": "default"</code> (permite girar) y <code>supportsTablet: true</code>.</p>
+
+  <h3>8.1 Columnas según el ancho real</h3>
+  <div class="archivo">src/hooks/useColumnas.ts</div>
+<pre><span class="k">export function</span> <span class="f">useColumnas</span>(anchoMinimoTarjeta = 170, margen = 12) {
+  <span class="k">const</span> { width, height } = <span class="f">useWindowDimensions</span>();   <span class="c">// se actualiza al girar</span>
+  <span class="k">const</span> columnas = Math.<span class="f">max</span>(2, Math.<span class="f">floor</span>((width - margen) / (anchoMinimoTarjeta + margen)));
+  <span class="k">const</span> anchoTarjeta = (width - margen * (columnas + 1)) / columnas;
+  <span class="k">return</span> { columnas, anchoTarjeta, margen, esHorizontal: width &gt; height, width, height };
+}</pre>
+  <p>Resultado: 2 columnas en un teléfono en vertical, 4 en horizontal y más en tableta. Como React Native no permite cambiar <code>numColumns</code> de una <code>FlatList</code> en caliente, le damos una <code>key</code> que depende del número de columnas para forzar un montaje nuevo al girar.</p>
+
+  <h3>8.2 Imágenes y videos sin deformación</h3>
+  <table>
+    <tr><th style="width:24%">Lugar</th><th style="width:30%">Técnica</th><th>Resultado</th></tr>
+    <tr><td>Tarjetas de listas</td><td><code>aspectRatio</code> fijo + <code>contentFit="cover"</code></td><td>La foto llena la tarjeta recortando los bordes, sin estirarse.</td></tr>
+    <tr><td>Detalle de producto</td><td><code>aspectRatio: 1</code> + <code>contentFit="contain"</code></td><td>Se ve la foto completa con su proporción original.</td></tr>
+    <tr><td>Video</td><td>Marco 16:9 negro + <code>contentFit="contain"</code></td><td>Videos verticales u horizontales se ven sin deformarse.</td></tr>
+    <tr><td>Video en horizontal</td><td>Ancho limitado por la altura disponible</td><td>El video cabe en pantalla y la información pasa al lado.</td></tr>
+  </table>
+
+  <div class="fila-img">
+    <figure><img class="h" src="img/10-horizontal-catalogo.jpg" alt=""><figcaption>Catálogo en horizontal: 4 columnas.</figcaption></figure>
+    <figure><img class="h" src="img/13-horizontal-video.jpg" alt=""><figcaption>Detalle con video: diseño lado a lado.</figcaption></figure>
+  </div>
+</section>
+
+<!-- ============================ 9. PRUEBAS ============================ -->
+<section>
+  <h2><span class="num">9.</span>Pruebas y verificación</h2>
+
+  <h3>9.1 Herramientas de calidad</h3>
+  <table>
+    <tr><th style="width:30%">Herramienta</th><th style="width:44%">Qué revisa</th><th>Resultado</th></tr>
+    <tr><td><code>npx tsc --noEmit</code></td><td>Tipos de TypeScript en modo estricto.</td><td><span class="ok">0 errores</span></td></tr>
+    <tr><td><code>npx expo lint</code></td><td>ESLint con las reglas de React Hooks y del React Compiler.</td><td><span class="ok">0 errores</span></td></tr>
+    <tr><td><code>npx expo-doctor</code></td><td>Compatibilidad de dependencias y configuración.</td><td><span class="ok">20/20 chequeos</span></td></tr>
+    <tr><td><code>npx expo export -p android</code></td><td>Que el paquete de Android compile e incluya los audios.</td><td><span class="ok">2,9 MB, 1409 módulos</span></td></tr>
+  </table>
+
+  <h3>9.2 Prueba del ciclo de vida del audio en el emulador</h3>
+  <p>Probamos la app en un emulador Pixel 7 con Android 16. Para comprobar que el audio realmente se detiene, y no solo que la interfaz lo indica, consultamos a Android cuántos reproductores de audio están activos con <code>adb shell dumpsys audio</code> (líneas <code>state:started</code>):</p>
+  <table>
+    <tr><th style="width:8%">Paso</th><th style="width:58%">Acción</th><th>Reproductores activos</th></tr>
+    <tr><td>1</td><td>Elegir "Cómo cuidar a tu perro" en Consejos (empieza a sonar)</td><td><b>1</b> (22 050 Hz, el formato de nuestras pistas)</td></tr>
+    <tr><td>2</td><td>Cambiar a la pestaña Catálogo</td><td><span class="ok">0</span></td></tr>
+    <tr><td>3</td><td>Volver a Consejos y pulsar Iniciar</td><td><b>1</b></td></tr>
+    <tr><td>4</td><td>Pulsar Home (salir de la app)</td><td><span class="ok">0</span></td></tr>
+  </table>
+
+  <h3>9.3 Prueba del video</h3>
+  <p>Los videos usados no tienen pista de sonido, así que no aparecen en <code>dumpsys audio</code>. Su comportamiento lo verificamos visualmente en el emulador:</p>
+  <ul>
+    <li>El video se reproduce dentro de la app; la barra de progreso avanza (0:05 y 0:06 de 0:12 en las capturas).</li>
+    <li>Los botones −10 s, reproducir/pausar y +10 s funcionan, igual que los controles nativos de ExoPlayer.</li>
+    <li>Al salir con Home en el segundo 0:04 y volver, el video aparece en pausa en 0:05: el reproductor se liberó, se creó de nuevo y retomó donde iba.</li>  </ul>
+
+  <h3>9.4 Verificación de los medios</h3>
+  <p>Las 20 imágenes y los 5 videos respondieron HTTP 200 con el tipo de contenido correcto, y cada imagen se revisó visualmente. Los videos son H.264 (<code>avc1</code>) con el índice <code>moov</code> antes de los datos y aceptan peticiones por rangos (HTTP 206).</p>
+</section>
+
+<!-- ============================ 10. PROBLEMAS ============================ -->
+<section>
+  <h2><span class="num">10.</span>Problemas encontrados y soluciones</h2>
+  <p>Durante el desarrollo nos encontramos con estos problemas. Los documentamos porque muestran decisiones técnicas reales y cómo se depuraron.</p>
+  <table>
+    <tr><th style="width:4%">#</th><th style="width:30%">Problema</th><th style="width:30%">Causa</th><th>Solución</th></tr>
+    <tr><td>1</td><td>El audio seguía sonando al cambiar de pestaña (riesgo de diseño).</td><td>Las pestañas no se desmontan al cambiar entre ellas.</td><td>Montar el reproductor solo si <code>useIsFocused()</code> es verdadero.</td></tr>
+    <tr><td>2</td><td>Error de tipos: <code>StyleSheet.absoluteFillObject</code> no existe.</td><td>React Native 0.88 eliminó esa propiedad.</td><td>Estilo explícito: <code>position: 'absolute'</code> con <code>top/left/right/bottom: 0</code>.</td></tr>
+    <tr><td>3</td><td>Error de tipos con <code>AppState.currentState</code>.</td><td>En RN 0.88 su tipo es <code>string</code> y puede ser nulo.</td><td>Conversión de tipo y valor por defecto <code>'active'</code>.</td></tr>
+    <tr><td>4</td><td>No se podía instalar ESLint ni otras dependencias (ERESOLVE).</td><td>npm elegía <code>react-dom@19.3.1</code>, que exige <code>react@^19.3.1</code>, pero Expo fija <code>19.3.0</code>.</td><td>Instalar <code>react-dom@19.3.0</code> con <code>npx expo install</code>.</td></tr>
+    <tr><td>5</td><td><code>expo-doctor</code>: faltaban dependencias.</td><td><code>expo-font</code> y <code>expo-asset</code> son dependencias nativas obligatorias.</td><td>Instalarlas; después, 20/20 chequeos.</td></tr>
+    <tr><td>6</td><td>El lint rechazó <code>player.currentTime = x</code>.</td><td>El React Compiler prohíbe modificar valores devueltos por un hook y leer <code>ref.current</code> durante el render.</td><td>Usar el método <code>player.seekBy()</code> y leer la posición con una función llamada dentro del evento.</td></tr>
+    <tr><td>7</td><td>El texto de los filtros salía recortado, sobre todo en horizontal.</td><td>La <code>FlatList</code> encogía el <code>ScrollView</code> horizontal de los chips.</td><td><code>flexShrink: 0</code> en la barra de chips.</td></tr>
+    <tr><td>8</td><td>El emulador se quedaba en "Bundling 25 %".</td><td>El firewall de Windows bloqueaba la conexión por la IP de la red local.</td><td><code>adb reverse tcp:8081 tcp:8081</code> y abrir la app por <code>127.0.0.1</code>.</td></tr>
+    <tr><td>9</td><td>Al volver a la app, el video se reiniciaba en 0:00 en vez de seguir donde iba.</td><td>La posición solo se aplicaba con el evento <code>readyToPlay</code>, que puede llegar antes de que el componente empiece a escucharlo.</td><td>Aplicar la posición guardada al crear el reproductor; el evento queda como respaldo.</td></tr>
+  </table>
+</section>
+
+<!-- ============================ 11. EJECUCIÓN ============================ -->
+<section>
+  <h2><span class="num">11.</span>Cómo ejecutar el proyecto</h2>
+  <h3>Requisitos</h3>
+  <ul>
+    <li>Node.js (se recomienda la versión LTS 22 o 24) y Git.</li>
+    <li>Android Studio con un emulador, <b>o</b> un celular con la app <b>Expo Go</b> compatible con la SDK 58.</li>
+  </ul>
+  <h3>Pasos</h3>
+<pre>git clone https://github.com/srwhite322/Huellitas.git
+cd Huellitas
+npm install
+npx expo start          <span class="c"># luego presionar "a" para abrir en el emulador de Android</span></pre>
+  <ul>
+    <li><b>Celular:</b> escanear el código QR con Expo Go (el celular y el computador deben estar en la misma red Wi-Fi).</li>
+    <li><b>Emulador:</b> si se queda cargando en "Bundling 25 %", ejecutar <code>adb reverse tcp:8081 tcp:8081</code> y volver a presionar <code>a</code>.</li>
+    <li><b>APK instalable:</b> <code>npx expo run:android</code> (requiere Android Studio) o <code>npx eas-cli@latest build -p android --profile preview</code>.</li>
+  </ul>
+  <div class="nota azul"><strong>Nota sobre Expo Go</strong>Las opciones nativas de <code>app.json</code>, como desactivar la reproducción en segundo plano, solo se aplican en una build nativa (APK). En Expo Go, el comportamiento lo garantiza el código: <code>useIsFocused</code>, <code>useAppActiva</code> y <code>shouldPlayInBackground: false</code>.</div>
+
+  <h3>Comandos de verificación</h3>
+<pre>npx tsc --noEmit        <span class="c"># tipos</span>
+npx expo lint           <span class="c"># reglas de código</span>
+npx expo-doctor         <span class="c"># dependencias</span></pre>
+
+  <h3>Créditos de los medios</h3>
+  <p>Fotos y videos: <b>Pexels</b>, con la Licencia Pexels (uso libre, sin atribución obligatoria). Audios: generados con la síntesis de voz en español de Windows.</p>
+</section>
+
+<!-- ============================ 12. CAPTURAS ============================ -->
+<section>
+  <h2><span class="num">12.</span>Capturas de la aplicación</h2>
+  <p>Capturas tomadas del emulador Pixel 7 (Android 16) con la app en ejecución.</p>
+  <div class="fila-img">
+    <figure><img class="v" src="img/01-catalogo.jpg" alt=""><figcaption>1. Catálogo de productos</figcaption></figure>
+    <figure><img class="v" src="img/02-filtro-juguetes.jpg" alt=""><figcaption>2. Filtro por categoría</figcaption></figure>
+    <figure><img class="v" src="img/03-detalle-producto.jpg" alt=""><figcaption>3. Detalle del producto</figcaption></figure>
+  </div>
+  <div class="fila-img">
+    <figure><img class="v" src="img/04-detalle-producto-2.jpg" alt=""><figcaption>4. Descripción y características</figcaption></figure>
+    <figure><img class="v" src="img/05-galeria.jpg" alt=""><figcaption>5. Galería con miniaturas</figcaption></figure>
+    <figure><img class="v" src="img/06-detalle-mascota.jpg" alt=""><figcaption>6. Detalle de mascota con video</figcaption></figure>
+  </div>
+</section>
+
+<section>
+  <div class="fila-img">
+    <figure><img class="v" src="img/07-video-reproduciendo.jpg" alt=""><figcaption>7. Video reproduciéndose (ExoPlayer)</figcaption></figure>
+    <figure><img class="v" src="img/08-consejos.jpg" alt=""><figcaption>8. Consejos de cuidado</figcaption></figure>
+    <figure><img class="v" src="img/09-audio-reproduciendo.jpg" alt=""><figcaption>9. Audio reproduciéndose</figcaption></figure>
+  </div>
+  <div class="fila-img">
+    <figure><img class="h" src="img/11-horizontal-galeria.jpg" alt=""><figcaption>10. Galería en horizontal: 4 columnas, sin deformar las fotos.</figcaption></figure>
+    <figure><img class="h" src="img/12-horizontal-consejos.jpg" alt=""><figcaption>11. Consejos en horizontal: lista y reproductor lado a lado. Al volver a la pestaña, el reproductor aparece en 0:00 porque se liberó y se creó de nuevo.</figcaption></figure>
+  </div>
+</section>
+
+</body>
+</html>

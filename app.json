@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Huellitas",
-    "slug": "huellitas",
-    "scheme": "huellitas",
+    "name": "Patitas & Bigotes",
+    "slug": "patitas-bigotes",
+    "scheme": "patitasbigotes",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/icon.png",
@@ -11,7 +11,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.huellitas.tiendamascotas",
+      "package": "com.patitasbigotes.tiendamascotas",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",

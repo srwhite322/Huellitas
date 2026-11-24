@@ -17,7 +17,7 @@ export default function TabsLayout() {
         name="index"
         options={{
           title: 'Catálogo',
-          headerTitle: 'Huellitas · Tienda',
+          headerTitle: 'Patitas & Bigotes',
           tabBarIcon: ({ color, size }) => <Ionicons name="storefront" color={color as string} size={size} />,
         }}
       />
